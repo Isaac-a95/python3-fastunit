@@ -2,6 +2,7 @@
 
 import sys
 import asyncio
+import concurrent
 
 from . import case
 from . import util
@@ -108,6 +109,8 @@ class TestSuite(BaseTestSuite):
         asyncMethod = []
         # loop = asyncio.get_event_loop()
         loop = asyncio.new_event_loop()
+        executor = concurrent.futures.ThreadPoolExecutor(max_workers=self.nworkers)
+        loop.set_default_executor(executor)
         asyncio.set_event_loop(loop)
         for index, test in enumerate(self):
             asyncMethod.append(self.startRunCase(index, test, result))

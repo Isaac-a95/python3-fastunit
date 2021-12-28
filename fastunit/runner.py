@@ -148,13 +148,14 @@ class TextTestRunner(object):
     def _makeResult(self):
         return self.resultclass(self.stream, self.descriptions, self.verbosity)
 
-    def run(self, test):
+    def run(self, test, nworkers=None):
         "Run the given test case or test suite."
         result = self._makeResult()
         registerResult(result)
         result.failfast = self.failfast
         result.buffer = self.buffer
         result.tb_locals = self.tb_locals
+        test.nworkers = nworkers
         with warnings.catch_warnings():
             if self.warnings:
                 # if self.warnings is set, use it to filter all the warnings
